@@ -1,0 +1,159 @@
+---
+title: "R Notebook for short gestation heifer paper"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+# R Setup
+
+```{r}
+#data manipulation
+if (!require("dplyr")) {
+  install.packages("dplyr", dependencies = TRUE)
+  library(dplyr)
+}
+#drop_na
+if (!require("tidyr")) {
+  install.packages("tidyr", dependencies = TRUE)
+  library(tidyr)
+}
+#%LIKE%
+if (!require("data.table")) {
+  install.packages("data.table", dependencies = TRUE)
+  library(data.table)
+}
+#glmer
+if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
+  library(lme4)
+}
+#lsmeans
+if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
+  library(lsmeans)
+}
+#lsmeans
+if (!require("lubridate")){install.packages("lsmeans", dependencies = TRUE)
+  library(lubridate)
+}
+```
+
+# Raw Data import
+
+```{r cache= TRUE}
+#data manipulation
+if (!require("dplyr")) {
+  install.packages("dplyr", dependencies = TRUE)
+  library(dplyr)
+}
+
+if(!(exists('AllDataRaw') && is.data.frame(get('AllDataRaw')))) {
+  AllDataRaw <- read.csv2(file = "./Data/TableauExportv2.csv", 
+                          header = T,
+                          strip.white = TRUE,
+                          dec = ".",
+                          sep = ',', na.strings = c('', 'NA')
+  )
+  oldColumns <- names(AllDataRaw)
+  newColumns <- gsub("\\.",    "", oldColumns, perl=TRUE)
+  #Strange name for AnimalId
+  newColumns[1] <- "AnimalId"
+  #Duplicate name for DaysInMilk
+  newColumns[19] <- "DaysInMilkBin"
+  names(AllDataRaw) <- newColumns
+  AllDataRaw <- AllDataRaw %>% 
+    dplyr::arrange(
+      HerdId,
+      AnimalId,
+      Date
+    )
+}
+```
+
+# Data manipulation
+
+```{r}
+#We inspect the quantile ranges
+
+quantile(AllDataRaw$DaysPregnant)
+
+AllData <- AllDataRaw %>% dplyr::filter(
+                            LactationNumber == 1,
+                            DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
+                            M305 > 0 #No missing M305 calculations
+                            ) %>% 
+                          dplyr::mutate(
+                            Date  = mdy_hms(Date), #reformat ordering date
+                            Year = year(mdy_hms(CalvingDate)),
+                            Month = month(mdy_hms(CalvingDate)),
+                            DaysPregnantQuantile = case_when(
+                              DaysPregnant < 275 ~ "0-25th Pct",
+                              TRUE ~ "25-75 Pct"
+                              )
+                            ) %>%
+                          dplyr::arrange(
+                            HerdId,
+                            AnimalId,
+                            Date
+                          ) %>%
+                          dplyr::group_by(
+                                          AnimalId,
+                                          HerdId,
+                                          DaysPregnantQuantile,
+                                          Year,
+                                          Month,
+                                          CalvingDate
+                                          ) %>% 
+                          summarise(
+                            lastM305 = as.integer(last(M305)),
+                            lastDIM = as.integer(last(DaysInMilk)),
+                            lastScale = as.numeric(last(Scale)),
+                            lastDecay = as.numeric(last(Decay)),
+                            lastRamp = as.numeric(last(Ramp)),
+                            lastPeakYield = as.numeric(last(PeakMilk)),
+                            lastTimeToPeak = as.integer(last(TimeToPeak))
+                            )
+
+                                        
+```
+
+# Basic data exploration
+
+```{r}
+summary(AllData[,c("lastM305",
+                   "lastDecay",
+                   "lastRamp",
+                   "lastScale",
+                   "lastPeakYield",
+                   "lastTimeToPeak")])
+```
+
+# Basid data visualisation
+
+```{r}
+op = par(mfrow=c(3, 2))
+hist(AllData$lastM305,
+     main = "M305", xlab="")
+hist(AllData$lastScale,
+     main = "Milkbot scale", xlab="")
+hist(AllData$lastDecay,
+     main = "Milkbot decay", xlab="")
+hist(AllData$lastRamp,
+     main = "Milkbot ramp", xlab="")
+hist(AllData$lastPeakYield,
+     main = "Milkbot peak yield", xlab="")
+hist(AllData$lastTimeToPeak,
+     main = "Milkbot time to peak", xlab="")
+
+```
+
+# Models build
+
+* [Link to model M305](Models/M305)
+* [Link to model Scale](Models/Scale)
+* [Link to model Decay](Models/Decay)
+* [Link to model Ramp](Models/Ramp.md)
+* [Link to model Peak Yield](Models/PeakYield.md)
+* [Link to model Time To Peak](Models/TimeToPeak.md)

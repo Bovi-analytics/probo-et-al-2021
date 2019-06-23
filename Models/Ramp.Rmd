@@ -1,0 +1,113 @@
+---
+title: "R Notebook"
+output: 
+  github_document:
+    toc: true
+    toc_depth: 3
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r include=FALSE}
+#data manipulation
+if (!require("dplyr")) {
+  install.packages("dplyr", dependencies = TRUE)
+  library(dplyr)
+}
+#glmer
+if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
+  library(lme4)
+}
+#lsmeans
+if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
+  library(lsmeans)
+}
+#lsmeans
+if (!require("lubridate")){install.packages("lsmeans", dependencies = TRUE)
+  library(lubridate)
+}
+```
+
+# Raw Data import
+
+```{r cache= TRUE}
+source('../DataImport.R')
+```
+
+# Data manipulation
+
+```{r}
+#We inspect the quantile ranges
+
+quantile(AllDataRaw$DaysPregnant)
+
+AllData <- AllDataRaw %>% dplyr::filter(
+                            LactationNumber == 1,
+                            DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
+                            M305 > 0 #No missing M305 calculations
+                            ) %>% 
+                          dplyr::mutate(
+                            Date  = mdy_hms(Date), #reformat ordering date
+                            Year = year(mdy_hms(CalvingDate)),
+                            Month = month(mdy_hms(CalvingDate)),
+                            DaysPregnantQuantile = case_when(
+                              DaysPregnant < 275 ~ "0-25th Pct",
+                              TRUE ~ "25-75 Pct"
+                              )
+                            ) %>%
+                          dplyr::arrange(
+                            HerdId,
+                            AnimalId,
+                            Date
+                          ) %>%
+                          dplyr::group_by(
+                                          AnimalId,
+                                          HerdId,
+                                          DaysPregnantQuantile,
+                                          Year,
+                                          Month,
+                                          CalvingDate
+                                          ) %>% 
+                          summarise(
+                            Value = as.integer(last(Ramp))
+                            )
+
+                                        
+```
+
+# Model M305
+
+## Base model
+
+```{r}
+baseline <- lmer(
+                  Value ~ 1 +  (1 | HerdId), 
+                  data = AllData
+                  )
+qqnorm(residuals(baseline, type = 'pearson'))
+```
+
+## Full model
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+GLM <- lmer(
+                  Value ~ 
+                    DaysPregnantQuantile + Year + Month
+                     +  (1 | HerdId),
+                  data = AllData
+                  )
+qqnorm(residuals(GLM))
+```
+
+## Comparison of baseline and nested model
+
+```{r}
+anova(GLM,baseline, test="Chisq")
+```
+
+## Least square means
+
+```{r}
+lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="tukey")
+```
+
