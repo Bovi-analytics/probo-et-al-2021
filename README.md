@@ -251,9 +251,9 @@ hist(AllData$lastTimeToPeak,
 Models build
 ============
 
--   [Link to model M305](Models/M305)
--   [Link to model Scale](Models/Scale)
--   [Link to model Decay](Models/Decay)
+-   [Link to model M305](Models/M305.md)
+-   [Link to model Scale](Models/Scale.md)
+-   [Link to model Decay](Models/Decay.md)
 -   [Link to model Ramp](Models/Ramp.md)
 -   [Link to model Peak Yield](Models/PeakYield.md)
 -   [Link to model Time To Peak](Models/TimeToPeak.md)
