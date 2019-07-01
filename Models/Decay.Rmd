@@ -47,6 +47,7 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             M305 > 0 #No missing M305 calculations
                             ) %>% 
                           dplyr::mutate(
+                            Decay = Decay,
                             Date  = mdy_hms(Date), #reformat ordering date
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
@@ -69,11 +70,13 @@ AllData <- AllDataRaw %>% dplyr::filter(
                                           CalvingDate
                                           ) %>% 
                           summarise(
-                            Value = as.integer(last(Decay))
+                            Value = as.numeric(last(Decay))
                             )
 
-                                        
+hist(AllData$Value)
 ```
+
+
 
 # Model M305
 

@@ -35,6 +35,7 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             M305 > 0 #No missing M305 calculations
                             ) %>% 
                           dplyr::mutate(
+                            Decay = Decay,
                             Date  = mdy_hms(Date), #reformat ordering date
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
@@ -57,9 +58,13 @@ AllData <- AllDataRaw %>% dplyr::filter(
                                           CalvingDate
                                           ) %>% 
                           summarise(
-                            Value = as.integer(last(Decay))
+                            Value = as.numeric(last(Decay))
                             )
+
+hist(AllData$Value)
 ```
+
+![](Decay_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 Model M305
 ==========
@@ -105,9 +110,11 @@ anova(GLM,baseline, test="Chisq")
     ## Models:
     ## baseline: Value ~ 1 + (1 | HerdId)
     ## GLM: Value ~ DaysPregnantQuantile + Year + Month + (1 | HerdId)
-    ##          Df  AIC  BIC logLik deviance Chisq Chi Df Pr(>Chisq)
-    ## baseline  3 -Inf -Inf    Inf     -Inf                        
-    ## GLM       6 -Inf -Inf    Inf     -Inf            3
+    ##          Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
+    ## baseline  3 -130830 -130808  65418  -130836                             
+    ## GLM       6 -130875 -130831  65443  -130887 50.646      3  5.821e-11 ***
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Least square means
 ------------------
@@ -115,9 +122,6 @@ Least square means
 ``` r
 lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="tukey")
 ```
-
-    ## Warning in vcov.merMod(object, correlation = FALSE): Computed variance-covariance matrix problem: not a positive definite matrix;
-    ## returning NA matrix
 
     ## Note: D.f. calculations have been disabled because the number of observations exceeds 3000.
     ## To enable adjustments, set emm_options(pbkrtest.limit = 10881) or larger,
@@ -128,13 +132,13 @@ lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="tukey")
     ## but be warned that this may result in large computation time and memory use.
 
     ## $lsmeans
-    ##  DaysPregnantQuantile lsmean SE  df asymp.LCL asymp.UCL
-    ##  0-25th Pct                0 NA Inf        NA        NA
-    ##  25-75 Pct                 0 NA Inf        NA        NA
+    ##  DaysPregnantQuantile  lsmean       SE  df asymp.LCL asymp.UCL
+    ##  0-25th Pct           0.00135 2.59e-05 Inf   0.00130   0.00140
+    ##  25-75 Pct            0.00137 2.44e-05 Inf   0.00133   0.00142
     ## 
     ## Degrees-of-freedom method: asymptotic 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
-    ##  contrast               estimate SE  df z.ratio p.value
-    ##  0-25th Pct - 25-75 Pct        0 NA Inf NA      NA
+    ##  contrast                estimate       SE  df z.ratio p.value
+    ##  0-25th Pct - 25-75 Pct -2.54e-05 1.32e-05 Inf -1.931  0.0535
