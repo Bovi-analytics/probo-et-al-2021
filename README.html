@@ -94,7 +94,7 @@ body {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We inspect the quantile ranges</span>
 
 <span class="kw">quantile</span>(AllDataRaw<span class="op">$</span>DaysPregnant, <span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.05</span>, <span class="fl">0.25</span>,<span class="fl">0.50</span>,<span class="fl">0.75</span>,<span class="dv">1</span>))</code></pre></div>
-<pre><code>##   0%   5%  25% &quot;encoding&quot;  75% 100% 
+<pre><code>##   0%   5%  25%  50%  75% 100% 
 ##  150  267  275  278  283  297</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">AllData &lt;-<span class="st"> </span>AllDataRaw <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(
                             LactationNumber <span class="op">==</span><span class="st"> </span><span class="dv">1</span>,

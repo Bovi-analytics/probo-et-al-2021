@@ -83,7 +83,7 @@ Data manipulation
 quantile(AllDataRaw$DaysPregnant, c(0,0.05, 0.25,0.50,0.75,1))
 ```
 
-    ##   0%   5%  25% "encoding"  75% 100% 
+    ##   0%   5%  25%  50%  75% 100% 
     ##  150  267  275  278  283  297
 
 ``` r
@@ -174,7 +174,7 @@ hist(AllData$lastTimeToPeak,
      main = "Milkbot time to peak", xlab="")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-25-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 Models build
 ============
