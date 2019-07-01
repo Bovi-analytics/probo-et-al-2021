@@ -39,7 +39,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
-                              DaysPregnant < 275 ~ "0-25th Pct",
+                              DaysPregnant < 267 ~ "0-5th Pct",
+                              DaysPregnant < 275 ~ "5-25th Pct",
                               TRUE ~ "25-75 Pct"
                               )
                             ) %>%
@@ -107,7 +108,7 @@ anova(GLM,baseline, test="Chisq")
     ## GLM: Value ~ DaysPregnantQuantile + Year + Month + (1 | HerdId)
     ##          Df   AIC   BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
     ## baseline  3 59307 59329 -29651    59301                             
-    ## GLM       6 59117 59161 -29553    59105 195.88      3  < 2.2e-16 ***
+    ## GLM       7 59117 59168 -29552    59103 198.04      4  < 2.2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -128,12 +129,17 @@ lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="tukey")
 
     ## $lsmeans
     ##  DaysPregnantQuantile lsmean    SE  df asymp.LCL asymp.UCL
-    ##  0-25th Pct             29.0 0.144 Inf      28.7      29.3
+    ##  0-5th Pct              29.2 0.193 Inf      28.8      29.5
     ##  25-75 Pct              28.7 0.133 Inf      28.5      29.0
+    ##  5-25th Pct             28.9 0.149 Inf      28.6      29.2
     ## 
     ## Degrees-of-freedom method: asymptotic 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
     ##  contrast               estimate     SE  df z.ratio p.value
-    ##  0-25th Pct - 25-75 Pct    0.241 0.0815 Inf 2.955   0.0031
+    ##  0-5th Pct - 25-75 Pct     0.434 0.1544 Inf  2.807  0.0138 
+    ##  0-5th Pct - 5-25th Pct    0.246 0.1672 Inf  1.470  0.3054 
+    ##  25-75 Pct - 5-25th Pct   -0.188 0.0891 Inf -2.109  0.0881 
+    ## 
+    ## P value adjustment: tukey method for comparing a family of 3 estimates

@@ -40,7 +40,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
-                              DaysPregnant < 275 ~ "0-25th Pct",
+                              DaysPregnant < 267 ~ "0-5th Pct",
+                              DaysPregnant < 275 ~ "5-25th Pct",
                               TRUE ~ "25-75 Pct"
                               )
                             ) %>%
@@ -112,7 +113,7 @@ anova(GLM,baseline, test="Chisq")
     ## GLM: Value ~ DaysPregnantQuantile + Year + Month + (1 | HerdId)
     ##          Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
     ## baseline  3 -130830 -130808  65418  -130836                             
-    ## GLM       6 -130875 -130831  65443  -130887 50.646      3  5.821e-11 ***
+    ## GLM       7 -130882 -130831  65448  -130896 59.907      4  3.034e-12 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -133,12 +134,17 @@ lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="tukey")
 
     ## $lsmeans
     ##  DaysPregnantQuantile  lsmean       SE  df asymp.LCL asymp.UCL
-    ##  0-25th Pct           0.00135 2.59e-05 Inf   0.00130   0.00140
-    ##  25-75 Pct            0.00137 2.44e-05 Inf   0.00133   0.00142
+    ##  0-5th Pct            0.00129 3.33e-05 Inf   0.00122   0.00135
+    ##  25-75 Pct            0.00138 2.46e-05 Inf   0.00133   0.00142
+    ##  5-25th Pct           0.00137 2.68e-05 Inf   0.00132   0.00142
     ## 
     ## Degrees-of-freedom method: asymptotic 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
     ##  contrast                estimate       SE  df z.ratio p.value
-    ##  0-25th Pct - 25-75 Pct -2.54e-05 1.32e-05 Inf -1.931  0.0535
+    ##  0-5th Pct - 25-75 Pct  -9.00e-05 2.50e-05 Inf -3.607  0.0009 
+    ##  0-5th Pct - 5-25th Pct -8.23e-05 2.70e-05 Inf -3.047  0.0065 
+    ##  25-75 Pct - 5-25th Pct  7.72e-06 1.44e-05 Inf  0.537  0.8532 
+    ## 
+    ## P value adjustment: tukey method for comparing a family of 3 estimates

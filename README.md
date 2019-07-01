@@ -52,6 +52,8 @@ if (!require("data.table")) {
 
     ## Loading required package: data.table
 
+    ## data.table 1.12.2 using 4 threads (see ?getDTthreads).  Latest news: r-datatable.com
+
     ## 
     ## Attaching package: 'data.table'
 
@@ -153,11 +155,11 @@ Data manipulation
 ``` r
 #We inspect the quantile ranges
 
-quantile(AllDataRaw$DaysPregnant)
+quantile(AllDataRaw$DaysPregnant, c(0,0.05, 0.25,0.50,0.75,1))
 ```
 
-    ##   0%  25%  50%  75% 100% 
-    ##  150  275  278  283  297
+    ##   0%   5%  25%  50%  75% 100% 
+    ##  150  267  275  278  283  297
 
 ``` r
 AllData <- AllDataRaw %>% dplyr::filter(
@@ -170,7 +172,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
-                              DaysPregnant < 275 ~ "0-25th Pct",
+                              DaysPregnant < 267 ~ "0-5th Pct",
+                              DaysPregnant < 275 ~ "5-25th Pct",
                               TRUE ~ "25-75 Pct"
                               )
                             ) %>%
@@ -246,7 +249,7 @@ hist(AllData$lastTimeToPeak,
      main = "Milkbot time to peak", xlab="")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
 Models build
 ============
