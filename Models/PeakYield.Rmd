@@ -70,9 +70,9 @@ AllData <- AllDataRaw %>% dplyr::filter(
                                           CalvingDate
                                           ) %>% 
                           summarise(
-                            Value = as.integer(last(PeakMilk))
-                            )
-
+                            Value = as.integer(last(PeakMilk)),
+                            AFC = as.integer(last(AFCmonths))
+                            ) %>% drop_na()
                                         
 ```
 
@@ -93,7 +93,7 @@ qqnorm(residuals(baseline, type = 'pearson'))
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 GLM <- lmer(
                   Value ~ 
-                    DaysPregnantQuantile + Year + Month
+                    DaysPregnantQuantile + Year + Month + AFC
                      +  (1 | HerdId),
                   data = AllData
                   )

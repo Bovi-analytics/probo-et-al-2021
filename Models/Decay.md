@@ -59,9 +59,9 @@ AllData <- AllDataRaw %>% dplyr::filter(
                                           CalvingDate
                                           ) %>% 
                           summarise(
-                            Value = as.numeric(last(Decay))
-                            )
-
+                            Value = as.numeric(last(Decay)),
+                            AFC = as.integer(last(AFCmonths))
+                            ) %>% drop_na()
 hist(AllData$Value)
 ```
 
@@ -89,7 +89,7 @@ Full model
 ``` r
 GLM <- lmer(
                   Value ~ 
-                    DaysPregnantQuantile + Year + Month
+                    DaysPregnantQuantile + Year + Month + AFC
                      +  (1 | HerdId),
                   data = AllData
                   )
@@ -110,10 +110,10 @@ anova(GLM,baseline, test="Chisq")
     ## Data: AllData
     ## Models:
     ## baseline: Value ~ 1 + (1 | HerdId)
-    ## GLM: Value ~ DaysPregnantQuantile + Year + Month + (1 | HerdId)
+    ## GLM: Value ~ DaysPregnantQuantile + Year + Month + AFC + (1 | HerdId)
     ##          Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
-    ## baseline  3 -130830 -130808  65418  -130836                             
-    ## GLM       7 -130882 -130831  65448  -130896 59.907      4  3.034e-12 ***
+    ## baseline  3 -130817 -130796  65412  -130823                             
+    ## GLM       8 -130888 -130830  65452  -130904 80.805      5  5.693e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -125,26 +125,26 @@ lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="tukey")
 ```
 
     ## Note: D.f. calculations have been disabled because the number of observations exceeds 3000.
-    ## To enable adjustments, set emm_options(pbkrtest.limit = 10881) or larger,
+    ## To enable adjustments, set emm_options(pbkrtest.limit = 10880) or larger,
     ## but be warned that this may result in large computation time and memory use.
 
     ## Note: D.f. calculations have been disabled because the number of observations exceeds 3000.
-    ## To enable adjustments, set emm_options(lmerTest.limit = 10881) or larger,
+    ## To enable adjustments, set emm_options(lmerTest.limit = 10880) or larger,
     ## but be warned that this may result in large computation time and memory use.
 
     ## $lsmeans
     ##  DaysPregnantQuantile  lsmean       SE  df asymp.LCL asymp.UCL
-    ##  0-5th Pct            0.00129 3.33e-05 Inf   0.00122   0.00135
-    ##  25-75 Pct            0.00138 2.46e-05 Inf   0.00133   0.00142
-    ##  5-25th Pct           0.00137 2.68e-05 Inf   0.00132   0.00142
+    ##  0-5th Pct            0.00129 3.34e-05 Inf   0.00122   0.00135
+    ##  25-75 Pct            0.00138 2.47e-05 Inf   0.00133   0.00142
+    ##  5-25th Pct           0.00137 2.69e-05 Inf   0.00132   0.00142
     ## 
     ## Degrees-of-freedom method: asymptotic 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
     ##  contrast                estimate       SE  df z.ratio p.value
-    ##  0-5th Pct - 25-75 Pct  -9.00e-05 2.50e-05 Inf -3.607  0.0009 
-    ##  0-5th Pct - 5-25th Pct -8.23e-05 2.70e-05 Inf -3.047  0.0065 
-    ##  25-75 Pct - 5-25th Pct  7.72e-06 1.44e-05 Inf  0.537  0.8532 
+    ##  0-5th Pct - 25-75 Pct  -9.09e-05 2.49e-05 Inf -3.646  0.0008 
+    ##  0-5th Pct - 5-25th Pct -8.64e-05 2.70e-05 Inf -3.200  0.0039 
+    ##  25-75 Pct - 5-25th Pct  4.50e-06 1.44e-05 Inf  0.313  0.9475 
     ## 
     ## P value adjustment: tukey method for comparing a family of 3 estimates

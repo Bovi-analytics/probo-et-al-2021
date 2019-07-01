@@ -71,9 +71,9 @@ AllData <- AllDataRaw %>% dplyr::filter(
                                           CalvingDate
                                           ) %>% 
                           summarise(
-                            Value = as.numeric(last(Decay))
-                            )
-
+                            Value = as.numeric(last(Decay)),
+                            AFC = as.integer(last(AFCmonths))
+                            ) %>% drop_na()
 hist(AllData$Value)
 ```
 
@@ -96,7 +96,7 @@ qqnorm(residuals(baseline, type = 'pearson'))
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 GLM <- lmer(
                   Value ~ 
-                    DaysPregnantQuantile + Year + Month
+                    DaysPregnantQuantile + Year + Month + AFC
                      +  (1 | HerdId),
                   data = AllData
                   )

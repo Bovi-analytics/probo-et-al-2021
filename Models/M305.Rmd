@@ -26,6 +26,11 @@ if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
 if (!require("lubridate")){install.packages("lsmeans", dependencies = TRUE)
   library(lubridate)
 }
+#drop_na
+if (!require("tidyr")) {
+  install.packages("tidyr", dependencies = TRUE)
+  library(tidyr)
+}
 ```
 
 # Raw Data import
@@ -70,8 +75,9 @@ AllData <- AllDataRaw %>% dplyr::filter(
                                           CalvingDate
                                           ) %>% 
                           summarise(
-                            Value = as.integer(last(M305))
-                            )
+                            Value = as.integer(last(M305)),
+                            AFC = as.integer(last(AFCmonths))
+                            ) %>% drop_na()
 
                                         
 ```
@@ -93,7 +99,7 @@ qqnorm(residuals(baseline, type = 'pearson'))
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 GLM <- lmer(
                   Value ~ 
-                    DaysPregnantQuantile + Year + Month
+                    DaysPregnantQuantile + Year + Month + AFC
                      +  (1 | HerdId),
                   data = AllData
                   )
@@ -104,6 +110,11 @@ qqnorm(residuals(GLM))
 
 ```{r}
 anova(GLM,baseline, test="Chisq")
+if (!require("car")) {
+  install.packages("car", dependencies = TRUE)
+  library(car)
+}
+Anova(GLM)
 ```
 
 ## Least square means

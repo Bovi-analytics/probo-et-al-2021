@@ -17,104 +17,29 @@ if (!require("dplyr")) {
   install.packages("dplyr", dependencies = TRUE)
   library(dplyr)
 }
-```
-
-    ## Loading required package: dplyr
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 #drop_na
 if (!require("tidyr")) {
   install.packages("tidyr", dependencies = TRUE)
   library(tidyr)
 }
-```
-
-    ## Loading required package: tidyr
-
-``` r
 #%LIKE%
 if (!require("data.table")) {
   install.packages("data.table", dependencies = TRUE)
   library(data.table)
 }
-```
-
-    ## Loading required package: data.table
-
-    ## data.table 1.12.2 using 4 threads (see ?getDTthreads).  Latest news: r-datatable.com
-
-    ## 
-    ## Attaching package: 'data.table'
-
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     between, first, last
-
-``` r
 #glmer
 if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
   library(lme4)
 }
-```
-
-    ## Loading required package: lme4
-
-    ## Loading required package: Matrix
-
-    ## 
-    ## Attaching package: 'Matrix'
-
-    ## The following object is masked from 'package:tidyr':
-    ## 
-    ##     expand
-
-``` r
 #lsmeans
 if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
   library(lsmeans)
 }
-```
-
-    ## Loading required package: lsmeans
-
-    ## Loading required package: emmeans
-
-    ## The 'lsmeans' package is now basically a front end for 'emmeans'.
-    ## Users are encouraged to switch the rest of the way.
-    ## See help('transition') for more information, including how to
-    ## convert old 'lsmeans' objects and scripts to work with 'emmeans'.
-
-``` r
 #lsmeans
 if (!require("lubridate")){install.packages("lsmeans", dependencies = TRUE)
   library(lubridate)
 }
 ```
-
-    ## Loading required package: lubridate
-
-    ## 
-    ## Attaching package: 'lubridate'
-
-    ## The following objects are masked from 'package:data.table':
-    ## 
-    ##     hour, isoweek, mday, minute, month, quarter, second, wday,
-    ##     week, yday, year
-
-    ## The following object is masked from 'package:base':
-    ## 
-    ##     date
 
 Raw Data import
 ===============
@@ -158,7 +83,7 @@ Data manipulation
 quantile(AllDataRaw$DaysPregnant, c(0,0.05, 0.25,0.50,0.75,1))
 ```
 
-    ##   0%   5%  25%  50%  75% 100% 
+    ##   0%   5%  25% "encoding"  75% 100% 
     ##  150  267  275  278  283  297
 
 ``` r
@@ -249,7 +174,7 @@ hist(AllData$lastTimeToPeak,
      main = "Milkbot time to peak", xlab="")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-25-1.png)
 
 Models build
 ============

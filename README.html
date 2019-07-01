@@ -39,83 +39,29 @@ body {
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;dplyr&quot;</span>)) {
   <span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
   <span class="kw">library</span>(dplyr)
-}</code></pre></div>
-<pre><code>## Loading required package: dplyr
-
-## 
-## Attaching package: 'dplyr'
-
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#drop_na</span>
+}
+<span class="co">#drop_na</span>
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;tidyr&quot;</span>)) {
   <span class="kw">install.packages</span>(<span class="st">&quot;tidyr&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
   <span class="kw">library</span>(tidyr)
-}</code></pre></div>
-<pre><code>## Loading required package: tidyr</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#%LIKE%</span>
+}
+<span class="co">#%LIKE%</span>
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;data.table&quot;</span>)) {
   <span class="kw">install.packages</span>(<span class="st">&quot;data.table&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
   <span class="kw">library</span>(data.table)
-}</code></pre></div>
-<pre><code>## Loading required package: data.table
-
-## data.table 1.12.2 using 4 threads (see ?getDTthreads).  Latest news: r-datatable.com
-
-## 
-## Attaching package: 'data.table'
-
-## The following objects are masked from 'package:dplyr':
-## 
-##     between, first, last</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#glmer</span>
+}
+<span class="co">#glmer</span>
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;lme4&quot;</span>)){<span class="kw">install.packages</span>(<span class="st">&quot;lme4&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
   <span class="kw">library</span>(lme4)
-}</code></pre></div>
-<pre><code>## Loading required package: lme4
-
-## Loading required package: Matrix
-
-## 
-## Attaching package: 'Matrix'
-
-## The following object is masked from 'package:tidyr':
-## 
-##     expand</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#lsmeans</span>
+}
+<span class="co">#lsmeans</span>
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;lsmeans&quot;</span>)){<span class="kw">install.packages</span>(<span class="st">&quot;lsmeans&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
   <span class="kw">library</span>(lsmeans)
-}</code></pre></div>
-<pre><code>## Loading required package: lsmeans
-
-## Loading required package: emmeans
-
-## The 'lsmeans' package is now basically a front end for 'emmeans'.
-## Users are encouraged to switch the rest of the way.
-## See help('transition') for more information, including how to
-## convert old 'lsmeans' objects and scripts to work with 'emmeans'.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#lsmeans</span>
+}
+<span class="co">#lsmeans</span>
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;lubridate&quot;</span>)){<span class="kw">install.packages</span>(<span class="st">&quot;lsmeans&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
   <span class="kw">library</span>(lubridate)
 }</code></pre></div>
-<pre><code>## Loading required package: lubridate
-
-## 
-## Attaching package: 'lubridate'
-
-## The following objects are masked from 'package:data.table':
-## 
-##     hour, isoweek, mday, minute, month, quarter, second, wday,
-##     week, yday, year
-
-## The following object is masked from 'package:base':
-## 
-##     date</code></pre>
 <h1 id="raw-data-import">Raw Data import</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#data manipulation</span>
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;dplyr&quot;</span>)) {
@@ -148,7 +94,7 @@ body {
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We inspect the quantile ranges</span>
 
 <span class="kw">quantile</span>(AllDataRaw<span class="op">$</span>DaysPregnant, <span class="kw">c</span>(<span class="dv">0</span>,<span class="fl">0.05</span>, <span class="fl">0.25</span>,<span class="fl">0.50</span>,<span class="fl">0.75</span>,<span class="dv">1</span>))</code></pre></div>
-<pre><code>##   0%   5%  25%  50%  75% 100% 
+<pre><code>##   0%   5%  25% &quot;encoding&quot;  75% 100% 
 ##  150  267  275  278  283  297</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">AllData &lt;-<span class="st"> </span>AllDataRaw <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">filter</span>(
                             LactationNumber <span class="op">==</span><span class="st"> </span><span class="dv">1</span>,
