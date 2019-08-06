@@ -77,7 +77,7 @@ if(!(exists('AllDataRaw') && is.data.frame(get('AllDataRaw')))) {
 ```{r}
 #We inspect the quantile ranges
 
-quantile(AllDataRaw$DaysPregnant, c(0,0.05, 0.25,0.50,0.75,1))
+quantile(AllDataRaw$DaysPregnant, c(0,0.001, 0.01, 0.05, 0.25,0.50,0.75,1))
 
 AllData <- AllDataRaw %>% dplyr::filter(
                             LactationNumber == 1,
@@ -89,8 +89,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
-                              DaysPregnant < 267 ~ "0-5th Pct",
-                              DaysPregnant < 275 ~ "5-25th Pct",
+                              DaysPregnant < 243 ~ "0-1th Pct",
+                              DaysPregnant < 275 ~ "1-25th Pct",
                               TRUE ~ "25-75 Pct"
                               )
                             ) %>%
@@ -131,7 +131,7 @@ summary(AllData[,c("lastM305",
                    "lastTimeToPeak")])
 ```
 
-# Basid data visualisation
+# Basic data visualisation
 
 ```{r}
 op = par(mfrow=c(3, 2))

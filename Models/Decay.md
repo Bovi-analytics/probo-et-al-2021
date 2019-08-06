@@ -40,8 +40,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
-                              DaysPregnant < 267 ~ "0-5th Pct",
-                              DaysPregnant < 275 ~ "5-25th Pct",
+                              DaysPregnant < 243 ~ "0-1th Pct",
+                              DaysPregnant < 275 ~ "1-25th Pct",
                               TRUE ~ "25-75 Pct"
                               )
                             ) %>%
@@ -113,7 +113,7 @@ anova(GLM,baseline, test="Chisq")
     ## GLM: Value ~ DaysPregnantQuantile + Year + Month + AFC + (1 | HerdId)
     ##          Df     AIC     BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
     ## baseline  3 -130817 -130796  65412  -130823                             
-    ## GLM       8 -130888 -130830  65452  -130904 80.805      5  5.693e-16 ***
+    ## GLM       8 -130883 -130825  65449  -130899 75.461      5  7.454e-15 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -134,17 +134,17 @@ lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="tukey")
 
     ## $lsmeans
     ##  DaysPregnantQuantile  lsmean       SE  df asymp.LCL asymp.UCL
-    ##  0-5th Pct            0.00129 3.34e-05 Inf   0.00122   0.00135
-    ##  25-75 Pct            0.00138 2.47e-05 Inf   0.00133   0.00142
-    ##  5-25th Pct           0.00137 2.69e-05 Inf   0.00132   0.00142
+    ##  0-1th Pct            0.00124 5.82e-05 Inf   0.00112   0.00135
+    ##  1-25th Pct           0.00136 2.64e-05 Inf   0.00131   0.00141
+    ##  25-75 Pct            0.00138 2.48e-05 Inf   0.00133   0.00142
     ## 
     ## Degrees-of-freedom method: asymptotic 
     ## Confidence level used: 0.95 
     ## 
     ## $contrasts
     ##  contrast                estimate       SE  df z.ratio p.value
-    ##  0-5th Pct - 25-75 Pct  -9.09e-05 2.49e-05 Inf -3.646  0.0008 
-    ##  0-5th Pct - 5-25th Pct -8.64e-05 2.70e-05 Inf -3.200  0.0039 
-    ##  25-75 Pct - 5-25th Pct  4.50e-06 1.44e-05 Inf  0.313  0.9475 
+    ##  0-1th Pct - 1-25th Pct -1.21e-04 5.48e-05 Inf -2.214  0.0688 
+    ##  0-1th Pct - 25-75 Pct  -1.40e-04 5.42e-05 Inf -2.574  0.0271 
+    ##  1-25th Pct - 25-75 Pct -1.83e-05 1.33e-05 Inf -1.369  0.3572 
     ## 
     ## P value adjustment: tukey method for comparing a family of 3 estimates

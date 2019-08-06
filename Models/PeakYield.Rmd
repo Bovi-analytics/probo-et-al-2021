@@ -23,8 +23,13 @@ if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
   library(lsmeans)
 }
 #lubridate
-if (!require("lubridate")){install.packages("lubridate", dependencies = TRUE)
+if (!require("lubridate")){install.packages("lsmeans", dependencies = TRUE)
   library(lubridate)
+}
+#drop_na
+if (!require("tidyr")) {
+  install.packages("tidyr", dependencies = TRUE)
+  library(tidyr)
 }
 ```
 
@@ -39,7 +44,7 @@ source('../DataImport.R')
 ```{r}
 #We inspect the quantile ranges
 
-quantile(AllDataRaw$DaysPregnant)
+# quantile(AllDataRaw$DaysPregnant)
 
 AllData <- AllDataRaw %>% dplyr::filter(
                             LactationNumber == 1,
@@ -51,8 +56,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
-                              DaysPregnant < 267 ~ "0-5th Pct",
-                              DaysPregnant < 275 ~ "5-25th Pct",
+                              DaysPregnant < 243 ~ "0-1th Pct",
+                              DaysPregnant < 275 ~ "1-25th Pct",
                               TRUE ~ "25-75 Pct"
                               )
                             ) %>%

@@ -5,7 +5,7 @@ R Notebook for short gestation heifer paper
 -   [Raw Data import](#raw-data-import)
 -   [Data manipulation](#data-manipulation)
 -   [Basic data exploration](#basic-data-exploration)
--   [Basid data visualisation](#basid-data-visualisation)
+-   [Basic data visualisation](#basic-data-visualisation)
 -   [Models build](#models-build)
 
 R Setup
@@ -27,6 +27,25 @@ if (!require("data.table")) {
   install.packages("data.table", dependencies = TRUE)
   library(data.table)
 }
+```
+
+    ## Loading required package: data.table
+
+    ## data.table 1.12.2 using 4 threads (see ?getDTthreads).  Latest news: r-datatable.com
+
+    ## 
+    ## Attaching package: 'data.table'
+
+    ## The following objects are masked from 'package:lubridate':
+    ## 
+    ##     hour, isoweek, mday, minute, month, quarter, second, wday,
+    ##     week, yday, year
+
+    ## The following objects are masked from 'package:dplyr':
+    ## 
+    ##     between, first, last
+
+``` r
 #glmer
 if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
   library(lme4)
@@ -80,11 +99,11 @@ Data manipulation
 ``` r
 #We inspect the quantile ranges
 
-quantile(AllDataRaw$DaysPregnant, c(0,0.05, 0.25,0.50,0.75,1))
+quantile(AllDataRaw$DaysPregnant, c(0,0.001, 0.01, 0.05, 0.25,0.50,0.75,1))
 ```
 
-    ##   0%   5%  25%  50%  75% 100% 
-    ##  150  267  275  278  283  297
+    ##   0% 0.1%   1%   5%  25%  50%  75% 100% 
+    ##  150  172  243  267  275  278  283  297
 
 ``` r
 AllData <- AllDataRaw %>% dplyr::filter(
@@ -97,8 +116,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
-                              DaysPregnant < 267 ~ "0-5th Pct",
-                              DaysPregnant < 275 ~ "5-25th Pct",
+                              DaysPregnant < 243 ~ "0-1th Pct",
+                              DaysPregnant < 275 ~ "1-25th Pct",
                               TRUE ~ "25-75 Pct"
                               )
                             ) %>%
@@ -155,7 +174,7 @@ summary(AllData[,c("lastM305",
     ##  Max.   :56.10   Max.   :348.00  
     ##  NA's   :265     NA's   :265
 
-Basid data visualisation
+Basic data visualisation
 ========================
 
 ``` r
@@ -174,7 +193,7 @@ hist(AllData$lastTimeToPeak,
      main = "Milkbot time to peak", xlab="")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 Models build
 ============
