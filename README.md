@@ -1,15 +1,14 @@
 R Notebook for short gestation heifer paper
 ================
 
--   [R Setup](#r-setup)
--   [Raw Data import](#raw-data-import)
--   [Data manipulation](#data-manipulation)
--   [Basic data exploration](#basic-data-exploration)
--   [Basic data visualisation](#basic-data-visualisation)
--   [Models build](#models-build)
+- [R Setup](#r-setup)
+- [Raw Data import](#raw-data-import)
+- [Data manipulation](#data-manipulation)
+- [Basic data exploration](#basic-data-exploration)
+- [Basic data visualisation](#basic-data-visualisation)
+- [Models build](#models-build)
 
-R Setup
-=======
+# R Setup
 
 ``` r
 #data manipulation
@@ -17,32 +16,114 @@ if (!require("dplyr")) {
   install.packages("dplyr", dependencies = TRUE)
   library(dplyr)
 }
+```
+
+    ## Loading required package: dplyr
+
+    ## Warning: package 'dplyr' was built under R version 4.3.2
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
 #drop_na
 if (!require("tidyr")) {
   install.packages("tidyr", dependencies = TRUE)
   library(tidyr)
 }
+```
+
+    ## Loading required package: tidyr
+
+``` r
 #%LIKE%
 if (!require("data.table")) {
   install.packages("data.table", dependencies = TRUE)
   library(data.table)
 }
+```
+
+    ## Loading required package: data.table
+
+    ## 
+    ## Attaching package: 'data.table'
+
+    ## The following objects are masked from 'package:dplyr':
+    ## 
+    ##     between, first, last
+
+``` r
 #glmer
 if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
   library(lme4)
 }
+```
+
+    ## Loading required package: lme4
+
+    ## Warning: package 'lme4' was built under R version 4.3.2
+
+    ## Loading required package: Matrix
+
+    ## 
+    ## Attaching package: 'Matrix'
+
+    ## The following objects are masked from 'package:tidyr':
+    ## 
+    ##     expand, pack, unpack
+
+``` r
 #lsmeans
 if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
   library(lsmeans)
 }
+```
+
+    ## Loading required package: lsmeans
+
+    ## Warning: package 'lsmeans' was built under R version 4.3.2
+
+    ## Loading required package: emmeans
+
+    ## Warning: package 'emmeans' was built under R version 4.3.2
+
+    ## The 'lsmeans' package is now basically a front end for 'emmeans'.
+    ## Users are encouraged to switch the rest of the way.
+    ## See help('transition') for more information, including how to
+    ## convert old 'lsmeans' objects and scripts to work with 'emmeans'.
+
+``` r
 #lsmeans
 if (!require("lubridate")){install.packages("lsmeans", dependencies = TRUE)
   library(lubridate)
 }
 ```
 
-Raw Data import
-===============
+    ## Loading required package: lubridate
+
+    ## Warning: package 'lubridate' was built under R version 4.3.2
+
+    ## 
+    ## Attaching package: 'lubridate'
+
+    ## The following objects are masked from 'package:data.table':
+    ## 
+    ##     hour, isoweek, mday, minute, month, quarter, second, wday, week,
+    ##     yday, year
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     date, intersect, setdiff, union
+
+# Raw Data import
 
 ``` r
 #data manipulation
@@ -74,8 +155,7 @@ if(!(exists('AllDataRaw') && is.data.frame(get('AllDataRaw')))) {
 }
 ```
 
-Data manipulation
-=================
+# Data manipulation
 
 ``` r
 #We inspect the quantile ranges
@@ -126,8 +206,11 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             )
 ```
 
-Basic data exploration
-======================
+    ## `summarise()` has grouped output by 'AnimalId', 'HerdId',
+    ## 'DaysPregnantQuantile', 'Year', 'Month'. You can override using the `.groups`
+    ## argument.
+
+# Basic data exploration
 
 ``` r
 summary(AllData[,c("lastM305",
@@ -155,8 +238,7 @@ summary(AllData[,c("lastM305",
     ##  Max.   :56.10   Max.   :348.00  
     ##  NA's   :265     NA's   :265
 
-Basic data visualisation
-========================
+# Basic data visualisation
 
 ``` r
 op = par(mfrow=c(3, 2))
@@ -174,14 +256,13 @@ hist(AllData$lastTimeToPeak,
      main = "Milkbot time to peak", xlab="")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-Models build
-============
+# Models build
 
--   [Link to model M305](Models/M305.md)
--   [Link to model Scale](Models/Scale.md)
--   [Link to model Decay](Models/Decay.md)
--   [Link to model Ramp](Models/Ramp.md)
--   [Link to model Peak Yield](Models/PeakYield.md)
--   [Link to model Time To Peak](Models/TimeToPeak.md)
+- [Link to model M305](Models/M305.md)
+- [Link to model Scale](Models/Scale.md)
+- [Link to model Decay](Models/Decay.md)
+- [Link to model Ramp](Models/Ramp.md)
+- [Link to model Peak Yield](Models/PeakYield.md)
+- [Link to model Time To Peak](Models/TimeToPeak.md)
