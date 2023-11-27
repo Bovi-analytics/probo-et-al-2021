@@ -1,5 +1,5 @@
 ---
-title: "R Notebook"
+title: "R Notebook for Milkbot RAMP"
 output: 
   github_document:
     toc: true
@@ -8,24 +8,30 @@ editor_options:
   chunk_output_type: inline
 ---
 
+
 ```{r include=FALSE}
-#data manipulation
-if (!require("dplyr")) {
-  install.packages("dplyr", dependencies = TRUE)
-  library(dplyr)
-}
-#glmer
-if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
-  library(lme4)
-}
-#lsmeans
-if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
-  library(lsmeans)
-}
-#lubridate
-if (!require("lubridate")){install.packages("lubridate", dependencies = TRUE)
-  library(lubridate)
-}
+# List of packages for session
+.packages = c("ggplot2",
+                  "dplyr",
+                  "tidyr",                
+                  "lme4",
+                  "lmerTest",
+                  "multcompView",
+                  "multcomp",
+                  "emmeans",
+                  "lsmeans",
+                  "TH.data",
+                  "car",
+                  "lubridate"
+              )
+
+# Install CRAN packages (if not already installed)
+.inst <- .packages %in% installed.packages()
+if(length(.packages[!.inst]) > 0) install.packages(.packages[!.inst], repos = "http://cran.us.r-project.org", dependencies = TRUE)
+
+# Load packages into session
+lapply(.packages, require, character.only=TRUE, quietly = TRUE)
+
 ```
 
 # Raw Data import
@@ -38,6 +44,9 @@ source('../DataImport.R')
 
 ```{r}
 #We inspect the quantile ranges
+scale_this <- function(x){
+  (x - mean(x, na.rm=F)) / sd(x, na.rm=F)
+}
 
 quantile(AllDataRaw$DaysPregnant)
 
@@ -50,9 +59,11 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Date  = mdy_hms(Date), #reformat ordering date
                             Year = year(mdy_hms(CalvingDate)),
                             Month = month(mdy_hms(CalvingDate)),
+                            Age = scale(as.numeric(difftime(mdy_hms(CalvingDate), mdy_hms(BirthDate), units = "days"))),
                             DaysPregnantQuantile = case_when(
                               DaysPregnant < 243 ~ "0-1th Pct",
-                              DaysPregnant < 275 ~ "1-25th Pct",
+                              DaysPregnant < 267 ~ "1-5th Pct",
+                              DaysPregnant < 275 ~ "5-25th Pct",
                               TRUE ~ "25-75 Pct"
                               )
                             ) %>%
@@ -67,23 +78,28 @@ AllData <- AllDataRaw %>% dplyr::filter(
                                           DaysPregnantQuantile,
                                           Year,
                                           Month,
-                                          CalvingDate
+                                          CalvingDate,
+                                          BirthDate
                                           ) %>% 
                           summarise(
-                            Value = as.integer(last(Ramp)),
-                            AFC = as.integer(last(AFCmonths))
-                            ) %>% drop_na()
-                                        
+                            Value = as.numeric(last(Ramp)),
+                            Age = as.numeric(last(Age))
+                            ) %>% 
+                          tidyr::drop_na() 
+```
+```{r}
+AllData %>% ungroup %>% count(DaysPregnantQuantile)    
 ```
 
-# Model M305
+# Model
 
 ## Base model
 
 ```{r}
 baseline <- lmer(
                   Value ~ 1 +  (1 | HerdId), 
-                  data = AllData
+                  data = AllData,
+                  REML = FALSE
                   )
 qqnorm(residuals(baseline, type = 'pearson'))
 ```
@@ -93,13 +109,14 @@ qqnorm(residuals(baseline, type = 'pearson'))
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
 GLM <- lmer(
                   Value ~ 
-                    DaysPregnantQuantile + Year + Month + AFC
+                    DaysPregnantQuantile + Year + Month + DaysPregnantQuantile + Age
                      +  (1 | HerdId),
-                  data = AllData
+                  data = AllData,
+                  REML = FALSE
                   )
 qqnorm(residuals(GLM))
+summary(GLM)
 ```
-
 ## Comparison of baseline and nested model
 
 ```{r}
@@ -109,6 +126,8 @@ anova(GLM,baseline, test="Chisq")
 ## Least square means
 
 ```{r}
-lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="tukey")
+emm_options(pbkrtest.limit = 10880)
+LSMs<-emmeans::emmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="sidak", glhargs=list())
+multcomp::cld(LSMs$emmeans, alpha=0.05, Letters=letters, adjust="sidak")
 ```
 

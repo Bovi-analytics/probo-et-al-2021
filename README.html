@@ -49,23 +49,8 @@ body {
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;data.table&quot;</span>)) {
   <span class="kw">install.packages</span>(<span class="st">&quot;data.table&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
   <span class="kw">library</span>(data.table)
-}</code></pre></div>
-<pre><code>## Loading required package: data.table
-
-## data.table 1.12.2 using 4 threads (see ?getDTthreads).  Latest news: r-datatable.com
-
-## 
-## Attaching package: 'data.table'
-
-## The following objects are masked from 'package:lubridate':
-## 
-##     hour, isoweek, mday, minute, month, quarter, second, wday,
-##     week, yday, year
-
-## The following objects are masked from 'package:dplyr':
-## 
-##     between, first, last</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#glmer</span>
+}
+<span class="co">#glmer</span>
 <span class="cf">if</span> (<span class="op">!</span><span class="kw">require</span>(<span class="st">&quot;lme4&quot;</span>)){<span class="kw">install.packages</span>(<span class="st">&quot;lme4&quot;</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
   <span class="kw">library</span>(lme4)
 }

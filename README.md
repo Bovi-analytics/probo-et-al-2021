@@ -27,25 +27,6 @@ if (!require("data.table")) {
   install.packages("data.table", dependencies = TRUE)
   library(data.table)
 }
-```
-
-    ## Loading required package: data.table
-
-    ## data.table 1.12.2 using 4 threads (see ?getDTthreads).  Latest news: r-datatable.com
-
-    ## 
-    ## Attaching package: 'data.table'
-
-    ## The following objects are masked from 'package:lubridate':
-    ## 
-    ##     hour, isoweek, mday, minute, month, quarter, second, wday,
-    ##     week, yday, year
-
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     between, first, last
-
-``` r
 #glmer
 if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
   library(lme4)
@@ -193,7 +174,7 @@ hist(AllData$lastTimeToPeak,
      main = "Milkbot time to peak", xlab="")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 Models build
 ============
