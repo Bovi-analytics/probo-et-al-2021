@@ -3,3 +3,6 @@
 .RData
 .Ruserdata
 *.csv
+.RDataTmp
+.RDataTmp1
+.RDataTmp2
