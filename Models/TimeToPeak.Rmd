@@ -51,7 +51,7 @@ quantile(AllDataRaw$DaysPregnant)
 
 AllData <- AllDataRaw %>% dplyr::filter(
                             LactationNumber == 1,
-                            DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
+                            #DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
                             M305 > 0 #No missing M305 calculations
                             ) %>% 
                           dplyr::mutate(
@@ -63,7 +63,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                               DaysPregnant < 243 ~ "0-1th Pct",
                               DaysPregnant < 267 ~ "1-5th Pct",
                               DaysPregnant < 275 ~ "5-25th Pct",
-                              TRUE ~ "25-75 Pct"
+                              DaysPregnant < 283 ~ "25-75th Pct",
+                              TRUE ~ "75-100 Pct"
                               )
                             ) %>%
                           dplyr::arrange(

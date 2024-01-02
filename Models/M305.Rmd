@@ -51,7 +51,7 @@ quantile(AllDataRaw$DaysPregnant)
 
 AllData <- AllDataRaw %>% dplyr::filter(
                             LactationNumber == 1,
-                            DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
+                            #DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
                             M305 > 0 #No missing M305 calculations
                             ) %>% 
                           dplyr::mutate(
@@ -63,7 +63,8 @@ AllData <- AllDataRaw %>% dplyr::filter(
                               DaysPregnant < 243 ~ "0-1th Pct",
                               DaysPregnant < 267 ~ "1-5th Pct",
                               DaysPregnant < 275 ~ "5-25th Pct",
-                              TRUE ~ "25-75 Pct"
+                              DaysPregnant < 283 ~ "25-75th Pct",
+                              TRUE ~ "75-100 Pct"
                               )
                             ) %>%
                           dplyr::arrange(
@@ -86,6 +87,11 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             ) %>% 
                           tidyr::drop_na() 
 ```
+
+```{r}
+AllData %>% ungroup %>% count()    
+```
+
 ```{r}
 AllData %>% ungroup %>% count(DaysPregnantQuantile)    
 ```
@@ -128,5 +134,8 @@ anova(GLM,baseline, test="Chisq")
 emm_options(pbkrtest.limit = 10880)
 LSMs<-emmeans::emmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="sidak", glhargs=list())
 multcomp::cld(LSMs$emmeans, alpha=0.05, Letters=letters, adjust="sidak")
+```
+```{r}
+lsmeans::lsmeans(GLM, pairwise~DaysPregnantQuantile, type = "response", adjust="sidak", glhargs=list())
 ```
 

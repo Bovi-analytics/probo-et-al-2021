@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style type="text/css">
+@font-face {
+font-family: octicons-link;
+src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+body {
+-webkit-text-size-adjust: 100%;
+text-size-adjust: 100%;
+color: #333;
+font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+font-size: 16px;
+line-height: 1.6;
+word-wrap: break-word;
+}
+a {
+background-color: transparent;
+}
+a:active,
+a:hover {
+outline: 0;
+}
+strong {
+font-weight: bold;
+}
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+img {
+border: 0;
+}
+hr {
+box-sizing: content-box;
+height: 0;
+}
+pre {
+overflow: auto;
+}
+code,
+kbd,
+pre {
+font-family: monospace, monospace;
+font-size: 1em;
+}
+input {
+color: inherit;
+font: inherit;
+margin: 0;
+}
+html input[disabled] {
+cursor: default;
+}
+input {
+line-height: normal;
+}
+input[type="checkbox"] {
+box-sizing: border-box;
+padding: 0;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+td,
+th {
+padding: 0;
+}
+* {
+box-sizing: border-box;
+}
+input {
+font: 13px / 1.4 Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+a {
+color: #4078c0;
+text-decoration: none;
+}
+a:hover,
+a:active {
+text-decoration: underline;
+}
+hr {
+height: 0;
+margin: 15px 0;
+overflow: hidden;
+background: transparent;
+border: 0;
+border-bottom: 1px solid #ddd;
+}
+hr:before {
+display: table;
+content: "";
+}
+hr:after {
+display: table;
+clear: both;
+content: "";
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 15px;
+margin-bottom: 15px;
+line-height: 1.1;
+}
+h1 {
+font-size: 30px;
+}
+h2 {
+font-size: 21px;
+}
+h3 {
+font-size: 16px;
+}
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+h6 {
+font-size: 11px;
+}
+blockquote {
+margin: 0;
+}
+ul,
+ol {
+padding: 0;
+margin-top: 0;
+margin-bottom: 0;
+}
+ol ol,
+ul ol {
+list-style-type: lower-roman;
+}
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+list-style-type: lower-alpha;
+}
+dd {
+margin-left: 0;
+}
+code {
+font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 12px;
+}
+pre {
+margin-top: 0;
+margin-bottom: 0;
+font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+.select::-ms-expand {
+opacity: 0;
+}
+.octicon {
+font: normal normal normal 16px/1 octicons-link;
+display: inline-block;
+text-decoration: none;
+text-rendering: auto;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+.octicon-link:before {
+content: '\f05c';
+}
+.markdown-body:before {
+display: table;
+content: "";
+}
+.markdown-body:after {
+display: table;
+clear: both;
+content: "";
+}
+.markdown-body>*:first-child {
+margin-top: 0 !important;
+}
+.markdown-body>*:last-child {
+margin-bottom: 0 !important;
+}
+a:not([href]) {
+color: inherit;
+text-decoration: none;
+}
+.anchor {
+display: inline-block;
+padding-right: 2px;
+margin-left: -18px;
+}
+.anchor:focus {
+outline: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin-top: 1em;
+margin-bottom: 16px;
+font-weight: bold;
+line-height: 1.4;
+}
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+color: #000;
+vertical-align: middle;
+visibility: hidden;
+}
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+text-decoration: none;
+}
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+visibility: visible;
+}
+h1 {
+padding-bottom: 0.3em;
+font-size: 2.25em;
+line-height: 1.2;
+border-bottom: 1px solid #eee;
+}
+h1 .anchor {
+line-height: 1;
+}
+h2 {
+padding-bottom: 0.3em;
+font-size: 1.75em;
+line-height: 1.225;
+border-bottom: 1px solid #eee;
+}
+h2 .anchor {
+line-height: 1;
+}
+h3 {
+font-size: 1.5em;
+line-height: 1.43;
+}
+h3 .anchor {
+line-height: 1.2;
+}
+h4 {
+font-size: 1.25em;
+}
+h4 .anchor {
+line-height: 1.2;
+}
+h5 {
+font-size: 1em;
+}
+h5 .anchor {
+line-height: 1.1;
+}
+h6 {
+font-size: 1em;
+color: #777;
+}
+h6 .anchor {
+line-height: 1.1;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table,
+pre {
+margin-top: 0;
+margin-bottom: 16px;
+}
+hr {
+height: 4px;
+padding: 0;
+margin: 16px 0;
+background-color: #e7e7e7;
+border: 0 none;
+}
+ul,
+ol {
+padding-left: 2em;
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+margin-top: 0;
+margin-bottom: 0;
+}
+li>p {
+margin-top: 16px;
+}
+dl {
+padding: 0;
+}
+dl dt {
+padding: 0;
+margin-top: 16px;
+font-size: 1em;
+font-style: italic;
+font-weight: bold;
+}
+dl dd {
+padding: 0 16px;
+margin-bottom: 16px;
+}
+blockquote {
+padding: 0 15px;
+color: #777;
+border-left: 4px solid #ddd;
+}
+blockquote>:first-child {
+margin-top: 0;
+}
+blockquote>:last-child {
+margin-bottom: 0;
+}
+table {
+display: block;
+width: 100%;
+overflow: auto;
+word-break: normal;
+word-break: keep-all;
+}
+table th {
+font-weight: bold;
+}
+table th,
+table td {
+padding: 6px 13px;
+border: 1px solid #ddd;
+}
+table tr {
+background-color: #fff;
+border-top: 1px solid #ccc;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+img {
+max-width: 100%;
+box-sizing: content-box;
+background-color: #fff;
+}
+code {
+padding: 0;
+padding-top: 0.2em;
+padding-bottom: 0.2em;
+margin: 0;
+font-size: 85%;
+background-color: rgba(0,0,0,0.04);
+border-radius: 3px;
+}
+code:before,
+code:after {
+letter-spacing: -0.2em;
+content: "\00a0";
+}
+pre>code {
+padding: 0;
+margin: 0;
+font-size: 100%;
+word-break: normal;
+white-space: pre;
+background: transparent;
+border: 0;
+}
+.highlight {
+margin-bottom: 16px;
+}
+.highlight pre,
+pre {
+padding: 16px;
+overflow: auto;
+font-size: 85%;
+line-height: 1.45;
+background-color: #f7f7f7;
+border-radius: 3px;
+}
+.highlight pre {
+margin-bottom: 0;
+word-break: normal;
+}
+pre {
+word-wrap: normal;
+}
+pre code {
+display: inline;
+max-width: initial;
+padding: 0;
+margin: 0;
+overflow: initial;
+line-height: inherit;
+word-wrap: normal;
+background-color: transparent;
+border: 0;
+}
+pre code:before,
+pre code:after {
+content: normal;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font-size: 11px;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.pl-c {
+color: #969896;
+}
+.pl-c1,
+.pl-s .pl-v {
+color: #0086b3;
+}
+.pl-e,
+.pl-en {
+color: #795da3;
+}
+.pl-s .pl-s1,
+.pl-smi {
+color: #333;
+}
+.pl-ent {
+color: #63a35c;
+}
+.pl-k {
+color: #a71d5d;
+}
+.pl-pds,
+.pl-s,
+.pl-s .pl-pse .pl-s1,
+.pl-sr,
+.pl-sr .pl-cce,
+.pl-sr .pl-sra,
+.pl-sr .pl-sre {
+color: #183691;
+}
+.pl-v {
+color: #ed6a43;
+}
+.pl-id {
+color: #b52a1d;
+}
+.pl-ii {
+background-color: #b52a1d;
+color: #f8f8f8;
+}
+.pl-sr .pl-cce {
+color: #63a35c;
+font-weight: bold;
+}
+.pl-ml {
+color: #693a17;
+}
+.pl-mh,
+.pl-mh .pl-en,
+.pl-ms {
+color: #1d3e81;
+font-weight: bold;
+}
+.pl-mq {
+color: #008080;
+}
+.pl-mi {
+color: #333;
+font-style: italic;
+}
+.pl-mb {
+color: #333;
+font-weight: bold;
+}
+.pl-md {
+background-color: #ffecec;
+color: #bd2c00;
+}
+.pl-mi1 {
+background-color: #eaffea;
+color: #55a532;
+}
+.pl-mdr {
+color: #795da3;
+font-weight: bold;
+}
+.pl-mo {
+color: #1d3e81;
+}
+kbd {
+display: inline-block;
+padding: 3px 5px;
+font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+line-height: 10px;
+color: #555;
+vertical-align: middle;
+background-color: #fcfcfc;
+border: solid 1px #ccc;
+border-bottom-color: #bbb;
+border-radius: 3px;
+box-shadow: inset 0 -1px 0 #bbb;
+}
+.task-list-item {
+list-style-type: none;
+}
+.task-list-item+.task-list-item {
+margin-top: 3px;
+}
+.task-list-item input {
+margin: 0 0.35em 0.25em -1.6em;
+vertical-align: middle;
+}
+:checked+.radio-label {
+z-index: 1;
+position: relative;
+border-color: #4078c0;
+}
+.sourceLine {
+display: inline-block;
+}
+code .kw { color: #000000; }
+code .dt { color: #ed6a43; }
+code .dv { color: #009999; }
+code .bn { color: #009999; }
+code .fl { color: #009999; }
+code .ch { color: #009999; }
+code .st { color: #183691; }
+code .co { color: #969896; }
+code .ot { color: #0086b3; }
+code .al { color: #a61717; }
+code .fu { color: #63a35c; }
+code .er { color: #a61717; background-color: #e3d2d2; }
+code .wa { color: #000000; }
+code .cn { color: #008080; }
+code .sc { color: #008080; }
+code .vs { color: #183691; }
+code .ss { color: #183691; }
+code .im { color: #000000; }
+code .va {color: #008080; }
+code .cf { color: #000000; }
+code .op { color: #000000; }
+code .bu { color: #000000; }
+code .ex { color: #000000; }
+code .pp { color: #999999; }
+code .at { color: #008080; }
+code .do { color: #969896; }
+code .an { color: #008080; }
+code .cv { color: #008080; }
+code .in { color: #008080; }
+</style>
+<style>
+body {
+box-sizing: border-box;
+min-width: 200px;
+max-width: 980px;
+margin: 0 auto;
+padding: 45px;
+padding-top: 0px;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="r-notebook-for-peakyield">R Notebook for PEAKYIELD</h1>
+<ul>
+<li><a href="#raw-data-import">Raw Data import</a></li>
+<li><a href="#data-manipulation">Data manipulation</a></li>
+<li><a href="#model">Model</a>
+<ul>
+<li><a href="#base-model">Base model</a></li>
+<li><a href="#full-model">Full model</a></li>
+<li><a href="#comparison-of-baseline-and-nested-model">Comparison of
+baseline and nested model</a></li>
+<li><a href="#least-square-means">Least square means</a></li>
+</ul></li>
+</ul>
+<h1 id="raw-data-import">Raw Data import</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&#39;../DataImport.R&#39;</span>)</span></code></pre></div>
+<h1 id="data-manipulation">Data manipulation</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co">#We inspect the quantile ranges</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>scale_this <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  (x <span class="sc">-</span> <span class="fu">mean</span>(x, <span class="at">na.rm=</span>F)) <span class="sc">/</span> <span class="fu">sd</span>(x, <span class="at">na.rm=</span>F)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>}</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">quantile</span>(AllDataRaw<span class="sc">$</span>DaysPregnant)</span></code></pre></div>
+<pre><code>##   0%  25%  50%  75% 100% 
+##  150  275  278  283  297</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>AllData <span class="ot">&lt;-</span> AllDataRaw <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>                            LactationNumber <span class="sc">==</span> <span class="dv">1</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>                            <span class="co"># DaysPregnant &lt;= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>                            M305 <span class="sc">&gt;</span> <span class="dv">0</span> <span class="co">#No missing M305 calculations</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>                            ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>                          dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>                            <span class="at">Date  =</span> <span class="fu">mdy_hms</span>(Date), <span class="co">#reformat ordering date</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>                            <span class="at">Year =</span> <span class="fu">year</span>(<span class="fu">mdy_hms</span>(CalvingDate)),</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>                            <span class="at">Month =</span> <span class="fu">month</span>(<span class="fu">mdy_hms</span>(CalvingDate)),</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>                            <span class="at">Age =</span> <span class="fu">scale</span>(<span class="fu">as.numeric</span>(<span class="fu">difftime</span>(<span class="fu">mdy_hms</span>(CalvingDate), <span class="fu">mdy_hms</span>(BirthDate), <span class="at">units =</span> <span class="st">&quot;days&quot;</span>))),</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>                            <span class="at">DaysPregnantQuantile =</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>                              DaysPregnant <span class="sc">&lt;</span> <span class="dv">243</span> <span class="sc">~</span> <span class="st">&quot;0-1th Pct&quot;</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>                              DaysPregnant <span class="sc">&lt;</span> <span class="dv">267</span> <span class="sc">~</span> <span class="st">&quot;1-5th Pct&quot;</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>                              DaysPregnant <span class="sc">&lt;</span> <span class="dv">275</span> <span class="sc">~</span> <span class="st">&quot;5-25th Pct&quot;</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>                              DaysPregnant <span class="sc">&lt;</span> <span class="dv">283</span> <span class="sc">~</span> <span class="st">&quot;25-75th Pct&quot;</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>                              <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">&quot;75-100 Pct&quot;</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>                              )</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>                            ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>                          dplyr<span class="sc">::</span><span class="fu">arrange</span>(</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>                            HerdId,</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>                            AnimalId,</span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>                            Date</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>                          ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>                          dplyr<span class="sc">::</span><span class="fu">group_by</span>(</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>                                          AnimalId,</span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>                                          HerdId,</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>                                          DaysPregnantQuantile,</span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>                                          Year,</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>                                          Month,</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>                                          CalvingDate,</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>                                          BirthDate</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>                                          ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>                          <span class="fu">summarise</span>(</span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>                            <span class="at">Value =</span> <span class="fu">as.numeric</span>(<span class="fu">last</span>(PeakMilk)),</span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>                            <span class="at">Age =</span> <span class="fu">as.numeric</span>(<span class="fu">last</span>(Age))</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>                            ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>                          tidyr<span class="sc">::</span><span class="fu">drop_na</span>() </span></code></pre></div>
+<pre><code>## `summarise()` has grouped output by &#39;AnimalId&#39;, &#39;HerdId&#39;, &#39;DaysPregnantQuantile&#39;, &#39;Year&#39;, &#39;Month&#39;, &#39;CalvingDate&#39;. You can override using the `.groups`
+## argument.</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>AllData <span class="sc">%&gt;%</span> ungroup <span class="sc">%&gt;%</span> <span class="fu">count</span>(DaysPregnantQuantile)    </span></code></pre></div>
+<pre><code>## # A tibble: 5 × 2
+##   DaysPregnantQuantile     n
+##   &lt;chr&gt;                &lt;int&gt;
+## 1 0-1th Pct              124
+## 2 1-5th Pct              487
+## 3 25-75th Pct           7043
+## 4 5-25th Pct            2174
+## 5 75-100 Pct            3586</code></pre>
+<h1 id="model">Model</h1>
+<h2 id="base-model">Base model</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>                  Value <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">|</span> HerdId), </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>                  <span class="at">data =</span> AllData,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>                  <span class="at">REML =</span> <span class="cn">FALSE</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>                  )</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">residuals</span>(baseline, <span class="at">type =</span> <span class="st">&#39;pearson&#39;</span>))</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<h2 id="full-model">Full model</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>GLM <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>                  Value <span class="sc">~</span> </span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>                    DaysPregnantQuantile <span class="sc">+</span> Year <span class="sc">+</span> Month <span class="sc">+</span> DaysPregnantQuantile <span class="sc">+</span> Age</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>                     <span class="sc">+</span>  (<span class="dv">1</span> <span class="sc">|</span> HerdId),</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>                  <span class="at">data =</span> AllData,</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>                  <span class="at">REML =</span> <span class="cn">FALSE</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>                  )</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="fu">qqnorm</span>(<span class="fu">residuals</span>(GLM))</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">summary</span>(GLM)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by maximum likelihood . t-tests use Satterthwaite&#39;s method [&#39;lmerModLmerTest&#39;]
+## Formula: Value ~ DaysPregnantQuantile + Year + Month + DaysPregnantQuantile +      Age + (1 | HerdId)
+##    Data: AllData
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##  85007.6  85082.6 -42493.8  84987.6    13404 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -4.7372 -0.5834  0.0588  0.6256  4.4112 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  HerdId   (Intercept) 13.64    3.693   
+##  Residual             32.25    5.679   
+## Number of obs: 13414, groups:  HerdId, 89
+## 
+## Fixed effects:
+##                                   Estimate Std. Error         df t value Pr(&gt;|t|)    
+## (Intercept)                     -2.287e+02  9.132e+01  1.340e+04  -2.505  0.01227 *  
+## DaysPregnantQuantile1-5th Pct    9.535e-01  5.828e-01  1.337e+04   1.636  0.10188    
+## DaysPregnantQuantile25-75th Pct  2.748e+00  5.305e-01  1.338e+04   5.179 2.26e-07 ***
+## DaysPregnantQuantile5-25th Pct   2.338e+00  5.395e-01  1.338e+04   4.333 1.48e-05 ***
+## DaysPregnantQuantile75-100 Pct   2.767e+00  5.323e-01  1.338e+04   5.198 2.04e-07 ***
+## Year                             1.273e-01  4.528e-02  1.340e+04   2.812  0.00492 ** 
+## Month                           -2.555e-02  1.449e-02  1.336e+04  -1.763  0.07793 .  
+## Age                              4.948e-01  5.751e-02  1.339e+04   8.604  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr) DPQ1-P DPQ25P DPQ5-P DPQ75P Year   Month 
+## DysPrgQ1-5P -0.005                                          
+## DysPQ25-75P -0.008  0.887                                   
+## DysPrQ5-25P -0.005  0.871  0.965                            
+## DyPQ75-100P -0.006  0.880  0.974  0.956                     
+## Year        -1.000  0.000  0.002  0.000  0.001              
+## Month       -0.215 -0.008  0.004  0.001 -0.001  0.214       
+## Age         -0.046 -0.017 -0.009  0.001 -0.022  0.046  0.011</code></pre>
+<h2 id="comparison-of-baseline-and-nested-model">Comparison of baseline
+and nested model</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">anova</span>(GLM,baseline, <span class="at">test=</span><span class="st">&quot;Chisq&quot;</span>)</span></code></pre></div>
+<pre><code>## Data: AllData
+## Models:
+## baseline: Value ~ 1 + (1 | HerdId)
+## GLM: Value ~ DaysPregnantQuantile + Year + Month + DaysPregnantQuantile + Age + (1 | HerdId)
+##          npar   AIC   BIC logLik deviance  Chisq Df Pr(&gt;Chisq)    
+## baseline    3 85157 85180 -42576    85151                         
+## GLM        10 85008 85083 -42494    84988 163.79  7  &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<h2 id="least-square-means">Least square means</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">emm_options</span>(<span class="at">pbkrtest.limit =</span> <span class="dv">10880</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>LSMs<span class="ot">&lt;-</span>emmeans<span class="sc">::</span><span class="fu">emmeans</span>(GLM, pairwise<span class="sc">~</span>DaysPregnantQuantile, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>, <span class="at">adjust=</span><span class="st">&quot;sidak&quot;</span>, <span class="at">glhargs=</span><span class="fu">list</span>())</span></code></pre></div>
+<pre><code>## Note: D.f. calculations have been disabled because the number of observations exceeds 10880.
+## To enable adjustments, add the argument &#39;pbkrtest.limit = 13414&#39; (or larger)
+## [or, globally, &#39;set emm_options(pbkrtest.limit = 13414)&#39; or larger];
+## but be warned that this may result in large computation time and memory use.
+
+## Note: D.f. calculations have been disabled because the number of observations exceeds 3000.
+## To enable adjustments, add the argument &#39;lmerTest.limit = 13414&#39; (or larger)
+## [or, globally, &#39;set emm_options(lmerTest.limit = 13414)&#39; or larger];
+## but be warned that this may result in large computation time and memory use.</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>multcomp<span class="sc">::</span><span class="fu">cld</span>(LSMs<span class="sc">$</span>emmeans, <span class="at">alpha=</span><span class="fl">0.05</span>, <span class="at">Letters=</span>letters, <span class="at">adjust=</span><span class="st">&quot;sidak&quot;</span>)</span></code></pre></div>
+<pre><code>##  DaysPregnantQuantile emmean    SE  df asymp.LCL asymp.UCL .group
+##  0-1th Pct              27.8 0.656 Inf      26.1      29.5  a    
+##  1-5th Pct              28.8 0.475 Inf      27.5      30.0  a    
+##  5-25th Pct             30.2 0.417 Inf      29.1      31.2   b   
+##  25-75th Pct            30.6 0.404 Inf      29.5      31.6    c  
+##  75-100 Pct             30.6 0.409 Inf      29.5      31.6   bc  
+## 
+## Degrees-of-freedom method: asymptotic 
+## Confidence level used: 0.95 
+## Conf-level adjustment: sidak method for 5 estimates 
+## P value adjustment: sidak method for 10 tests 
+## significance level used: alpha = 0.05 
+## NOTE: If two or more means share the same grouping symbol,
+##       then we cannot show them to be different.
+##       But we also did not show them to be the same.</code></pre>
+
+</body>
+</html>

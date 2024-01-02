@@ -11,44 +11,32 @@ editor_options:
 # R Setup
 
 ```{r}
-#data manipulation
-if (!require("dplyr")) {
-  install.packages("dplyr", dependencies = TRUE)
-  library(dplyr)
-}
-#drop_na
-if (!require("tidyr")) {
-  install.packages("tidyr", dependencies = TRUE)
-  library(tidyr)
-}
-#%LIKE%
-if (!require("data.table")) {
-  install.packages("data.table", dependencies = TRUE)
-  library(data.table)
-}
-#glmer
-if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
-  library(lme4)
-}
-#lsmeans
-if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
-  library(lsmeans)
-}
-#lsmeans
-if (!require("lubridate")){install.packages("lsmeans", dependencies = TRUE)
-  library(lubridate)
-}
+# List of packages for session
+.packages = c("ggplot2",
+                  "dplyr",
+                  "tidyr",                
+                  "lme4",
+                  "lmerTest",
+                  "multcompView",
+                  "multcomp",
+                  "emmeans",
+                  "lsmeans",
+                  "TH.data",
+                  "car",
+                  "lubridate"
+              )
+
+# Install CRAN packages (if not already installed)
+.inst <- .packages %in% installed.packages()
+if(length(.packages[!.inst]) > 0) install.packages(.packages[!.inst], repos = "http://cran.us.r-project.org", dependencies = TRUE)
+
+# Load packages into session
+lapply(.packages, require, character.only=TRUE, quietly = TRUE)
 ```
 
 # Raw Data import
 
 ```{r cache= TRUE}
-#data manipulation
-if (!require("dplyr")) {
-  install.packages("dplyr", dependencies = TRUE)
-  library(dplyr)
-}
-
 if(!(exists('AllDataRaw') && is.data.frame(get('AllDataRaw')))) {
   AllDataRaw <- read.csv2(file = "./Data/TableauExportv2.csv", 
                           header = T,
@@ -74,6 +62,23 @@ if(!(exists('AllDataRaw') && is.data.frame(get('AllDataRaw')))) {
 
 # Data manipulation
 
+## Descriptives 
+
+```{r}
+AllDataUngrouped <- AllDataRaw %>% dplyr::filter(
+                            LactationNumber == 1,
+                            # DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
+                            M305 > 0 #No missing M305 calculations
+                            )
+AllDataUngrouped %>% count()
+
+AllDataUngrouped %>% summarise(count = n_distinct(AnimalId))
+
+AllDataUngrouped %>% summarise(count = n_distinct(HerdId))
+```
+
+
+
 ```{r}
 #We inspect the quantile ranges
 
@@ -81,7 +86,7 @@ quantile(AllDataRaw$DaysPregnant, c(0,0.001, 0.01, 0.05, 0.25,0.50,0.75,1))
 
 AllData <- AllDataRaw %>% dplyr::filter(
                             LactationNumber == 1,
-                            DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
+                            # DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
                             M305 > 0 #No missing M305 calculations
                             ) %>% 
                           dplyr::mutate(
@@ -90,8 +95,9 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
                               DaysPregnant < 243 ~ "0-1th Pct",
-                              DaysPregnant < 275 ~ "1-25th Pct",
-                              TRUE ~ "25-75 Pct"
+                              DaysPregnant < 267 ~ "1-25th Pct",
+                              DaysPregnant < 283 ~ "25-75th Pct",
+                              TRUE ~ "75-100 Pct"
                               )
                             ) %>%
                           dplyr::arrange(

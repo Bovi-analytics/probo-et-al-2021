@@ -4,6 +4,7 @@ R Notebook for short gestation heifer paper
 - [R Setup](#r-setup)
 - [Raw Data import](#raw-data-import)
 - [Data manipulation](#data-manipulation)
+  - [Descriptives](#descriptives)
 - [Basic data exploration](#basic-data-exploration)
 - [Basic data visualisation](#basic-data-visualisation)
 - [Models build](#models-build)
@@ -11,127 +12,68 @@ R Notebook for short gestation heifer paper
 # R Setup
 
 ``` r
-#data manipulation
-if (!require("dplyr")) {
-  install.packages("dplyr", dependencies = TRUE)
-  library(dplyr)
-}
+# List of packages for session
+.packages = c("ggplot2",
+                  "dplyr",
+                  "tidyr",                
+                  "lme4",
+                  "lmerTest",
+                  "multcompView",
+                  "multcomp",
+                  "emmeans",
+                  "lsmeans",
+                  "TH.data",
+                  "car",
+                  "lubridate"
+              )
+
+# Install CRAN packages (if not already installed)
+.inst <- .packages %in% installed.packages()
+if(length(.packages[!.inst]) > 0) install.packages(.packages[!.inst], repos = "http://cran.us.r-project.org", dependencies = TRUE)
+
+# Load packages into session
+lapply(.packages, require, character.only=TRUE, quietly = TRUE)
 ```
 
-    ## Loading required package: dplyr
-
-    ## Warning: package 'dplyr' was built under R version 4.3.2
-
+    ## [[1]]
+    ## [1] TRUE
     ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
+    ## [[2]]
+    ## [1] TRUE
     ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
+    ## [[3]]
+    ## [1] TRUE
     ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-#drop_na
-if (!require("tidyr")) {
-  install.packages("tidyr", dependencies = TRUE)
-  library(tidyr)
-}
-```
-
-    ## Loading required package: tidyr
-
-``` r
-#%LIKE%
-if (!require("data.table")) {
-  install.packages("data.table", dependencies = TRUE)
-  library(data.table)
-}
-```
-
-    ## Loading required package: data.table
-
+    ## [[4]]
+    ## [1] TRUE
     ## 
-    ## Attaching package: 'data.table'
-
-    ## The following objects are masked from 'package:dplyr':
+    ## [[5]]
+    ## [1] TRUE
     ## 
-    ##     between, first, last
-
-``` r
-#glmer
-if (!require("lme4")){install.packages("lme4", dependencies = TRUE)
-  library(lme4)
-}
-```
-
-    ## Loading required package: lme4
-
-    ## Warning: package 'lme4' was built under R version 4.3.2
-
-    ## Loading required package: Matrix
-
+    ## [[6]]
+    ## [1] TRUE
     ## 
-    ## Attaching package: 'Matrix'
-
-    ## The following objects are masked from 'package:tidyr':
+    ## [[7]]
+    ## [1] TRUE
     ## 
-    ##     expand, pack, unpack
-
-``` r
-#lsmeans
-if (!require("lsmeans")){install.packages("lsmeans", dependencies = TRUE)
-  library(lsmeans)
-}
-```
-
-    ## Loading required package: lsmeans
-
-    ## Warning: package 'lsmeans' was built under R version 4.3.2
-
-    ## Loading required package: emmeans
-
-    ## Warning: package 'emmeans' was built under R version 4.3.2
-
-    ## The 'lsmeans' package is now basically a front end for 'emmeans'.
-    ## Users are encouraged to switch the rest of the way.
-    ## See help('transition') for more information, including how to
-    ## convert old 'lsmeans' objects and scripts to work with 'emmeans'.
-
-``` r
-#lsmeans
-if (!require("lubridate")){install.packages("lsmeans", dependencies = TRUE)
-  library(lubridate)
-}
-```
-
-    ## Loading required package: lubridate
-
-    ## Warning: package 'lubridate' was built under R version 4.3.2
-
+    ## [[8]]
+    ## [1] TRUE
     ## 
-    ## Attaching package: 'lubridate'
-
-    ## The following objects are masked from 'package:data.table':
+    ## [[9]]
+    ## [1] TRUE
     ## 
-    ##     hour, isoweek, mday, minute, month, quarter, second, wday, week,
-    ##     yday, year
-
-    ## The following objects are masked from 'package:base':
+    ## [[10]]
+    ## [1] TRUE
     ## 
-    ##     date, intersect, setdiff, union
+    ## [[11]]
+    ## [1] TRUE
+    ## 
+    ## [[12]]
+    ## [1] TRUE
 
 # Raw Data import
 
 ``` r
-#data manipulation
-if (!require("dplyr")) {
-  install.packages("dplyr", dependencies = TRUE)
-  library(dplyr)
-}
-
 if(!(exists('AllDataRaw') && is.data.frame(get('AllDataRaw')))) {
   AllDataRaw <- read.csv2(file = "./Data/TableauExportv2.csv", 
                           header = T,
@@ -157,6 +99,34 @@ if(!(exists('AllDataRaw') && is.data.frame(get('AllDataRaw')))) {
 
 # Data manipulation
 
+## Descriptives
+
+``` r
+AllDataUngrouped <- AllDataRaw %>% dplyr::filter(
+                            LactationNumber == 1,
+                            # DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
+                            M305 > 0 #No missing M305 calculations
+                            )
+AllDataUngrouped %>% count()
+```
+
+    ##         n
+    ## 1 2124486
+
+``` r
+AllDataUngrouped %>% summarise(count = n_distinct(AnimalId))
+```
+
+    ##   count
+    ## 1 13735
+
+``` r
+AllDataUngrouped %>% summarise(count = n_distinct(HerdId))
+```
+
+    ##   count
+    ## 1    89
+
 ``` r
 #We inspect the quantile ranges
 
@@ -169,7 +139,7 @@ quantile(AllDataRaw$DaysPregnant, c(0,0.001, 0.01, 0.05, 0.25,0.50,0.75,1))
 ``` r
 AllData <- AllDataRaw %>% dplyr::filter(
                             LactationNumber == 1,
-                            DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
+                            # DaysPregnant <= 283, #We drop all above 75th percentile because no interest at this stage, missing inseminations?
                             M305 > 0 #No missing M305 calculations
                             ) %>% 
                           dplyr::mutate(
@@ -178,8 +148,9 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             Month = month(mdy_hms(CalvingDate)),
                             DaysPregnantQuantile = case_when(
                               DaysPregnant < 243 ~ "0-1th Pct",
-                              DaysPregnant < 275 ~ "1-25th Pct",
-                              TRUE ~ "25-75 Pct"
+                              DaysPregnant < 267 ~ "1-25th Pct",
+                              DaysPregnant < 283 ~ "25-75th Pct",
+                              TRUE ~ "75-100 Pct"
                               )
                             ) %>%
                           dplyr::arrange(
@@ -206,9 +177,7 @@ AllData <- AllDataRaw %>% dplyr::filter(
                             )
 ```
 
-    ## `summarise()` has grouped output by 'AnimalId', 'HerdId',
-    ## 'DaysPregnantQuantile', 'Year', 'Month'. You can override using the `.groups`
-    ## argument.
+    ## `summarise()` has grouped output by 'AnimalId', 'HerdId', 'DaysPregnantQuantile', 'Year', 'Month'. You can override using the `.groups` argument.
 
 # Basic data exploration
 
@@ -221,22 +190,14 @@ summary(AllData[,c("lastM305",
                    "lastTimeToPeak")])
 ```
 
-    ##     lastM305       lastDecay            lastRamp       lastScale    
-    ##  Min.   : 3044   Min.   :-0.000471   Min.   :24.77   Min.   :14.50  
-    ##  1st Qu.: 7336   1st Qu.: 0.000863   1st Qu.:25.54   1st Qu.:31.69  
-    ##  Median : 8711   Median : 0.001221   Median :30.41   Median :38.03  
-    ##  Mean   : 8688   Mean   : 0.001281   Mean   :29.62   Mean   :36.21  
-    ##  3rd Qu.:10004   3rd Qu.: 0.001654   3rd Qu.:31.32   3rd Qu.:40.25  
-    ##  Max.   :18384   Max.   : 0.002703   Max.   :36.67   Max.   :61.85  
-    ##                                                                     
-    ##  lastPeakYield   lastTimeToPeak  
-    ##  Min.   :12.00   Min.   : 52.00  
-    ##  1st Qu.:27.60   1st Qu.: 66.00  
-    ##  Median :32.50   Median : 77.00  
-    ##  Mean   :31.86   Mean   : 80.48  
-    ##  3rd Qu.:35.80   3rd Qu.: 89.00  
-    ##  Max.   :56.10   Max.   :348.00  
-    ##  NA's   :265     NA's   :265
+    ##     lastM305       lastDecay            lastRamp       lastScale     lastPeakYield   lastTimeToPeak  
+    ##  Min.   : 3044   Min.   :-0.000471   Min.   :24.77   Min.   :14.50   Min.   :11.90   Min.   : 52.00  
+    ##  1st Qu.: 7304   1st Qu.: 0.000893   1st Qu.:25.42   1st Qu.:31.61   1st Qu.:27.50   1st Qu.: 66.00  
+    ##  Median : 8682   Median : 0.001239   Median :30.34   Median :38.03   Median :32.40   Median : 76.00  
+    ##  Mean   : 8667   Mean   : 0.001297   Mean   :29.54   Mean   :36.20   Mean   :31.81   Mean   : 79.93  
+    ##  3rd Qu.:10004   3rd Qu.: 0.001682   3rd Qu.:31.20   3rd Qu.:40.23   3rd Qu.:35.70   3rd Qu.: 88.00  
+    ##  Max.   :18384   Max.   : 0.002703   Max.   :36.67   Max.   :61.88   Max.   :56.10   Max.   :348.00  
+    ##                                                                      NA's   :318     NA's   :318
 
 # Basic data visualisation
 
@@ -256,7 +217,7 @@ hist(AllData$lastTimeToPeak,
      main = "Milkbot time to peak", xlab="")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
 
 # Models build
 
